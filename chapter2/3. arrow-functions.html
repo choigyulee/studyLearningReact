@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <script type="text/babel">
+
+    // 1. 일반 함수와 비교
+
+    var citizen = function (name) {
+      return `서울에 거주하는 ${name}`
+    }
+    console.log(citizen("최규리"))
+    console.log(citizen("최범규"))
+
+    var citizen = name => `서울에 거주하는 ${name}`
+    console.log(citizen("오성원"))
+    console.log(citizen("오정원"))
+    //자바스크립트에서는 세미콜론(;)이 선택사항
+
+
+    // 2. 파라미터 2개 이상
+
+    var citizen = function (name, land) {
+      return `${land}에 거주하는 ${name}`
+    }
+
+    var citizen = (name, land) => `${land}에 거주하는 ${name}`
+
+    console.log(citizen("최규리", "서울"))
+    console.log(citizen("최범규", "인천"))
+
+
+    // 3. 반환 결과를 계산하기 위해 여러 줄을 사용해야 할 떄는 함수 본문 전체를 중괄호로 감싸기
+    //일반 함수와 화살표 함수 비교
+
+    var citizen = function (name, land) {
+      if (!name) {
+        throw new Error('citizen에 이름을 넘겨야 합니다.')
+      }
+      if (!land) {
+        throw new Error('land에 거주지를 넘겨야 합니다.')
+      }
+      return `${land}에 거주하는 ${name}`
+    }
+
+    var citizen = (name, land) => {
+      if (!name) {
+        throw new Error('citizen에 이름을 넘겨야 합니다.')
+      }
+      if (!land) {
+        throw new Error('land에 거주지를 넘겨야 합니다.')
+      }
+      return `${land}에 거주하는 ${name}`
+    }
+
+    console.log(citizen("최규리", "서울")) //서울에 거주하는 최규리
+    console.log(citizen("최범규")) //오류
+
+
+    // 4. 화살표 함수는 this를 새로 바인딩하지 않음
+    
+    var seoul = {
+      districts: ["gangnam", "gangnseo", "gangdong", "gangbuk", "gwangjjin", "gwanak", "guro", "geumcheon", "nowon", "dobong", "dongdaemun", "dongjak", "mapo", "seocho", "seodaemun", "sungdong", "sungbuk", "songpa", "yangcheon", "yungdeungpo", "yongsan", "eunpeung", "jongno", "junggu", "jungnang"],
+      print: function(delay=1000) {
+        setTimeout(function() {
+          console.log(this.districts.join(",")) //this는 seoul 객체가 아님
+        }, delay)
+      }
+    }
+    seoul.print() //this.districts의 join 메서드를 호출하려고 시도하므로 오류 발생
+
+    var seoul = {
+      districts: ["gangnam", "gangnseo", "gangdong", "gangbuk", "gwangjjin", "gwanak", "guro", "geumcheon", "nowon", "dobong", "dongdaemun", "dongjak", "mapo", "seocho", "seodaemun", "sungdong", "sungbuk", "songpa", "yangcheon", "yungdeungpo", "yongsan", "eunpeung", "jongno", "junggu", "jungnang"],
+      print: function(delay=1000) {
+        setTimeout(() => {
+          console.log(this.districts.join(","))
+        }, delay)
+      }
+    }
+    seoul.print() //정상 작동
+
+    //옮긴이가 재밌다고 주장하는 것: print 프로퍼티를 정의하는 function (delay=1000){...}의 본문 안에서는 this가 seoul 객체이지만,
+    //그 프로퍼티 안에서 setTimeout을 호출하면서 정의한 function(){...}의 this는 window 객체이다.
+    //this 바인딩 참고
+
+    var seoul = {
+      districts: ["gangnam", "gangnseo", "gangdong", "gangbuk", "gwangjjin", "gwanak", "guro", "geumcheon", "nowon", "dobong", "dongdaemun", "dongjak", "mapo", "seocho", "seodaemun", "sungdong", "sungbuk", "songpa", "yangcheon", "yungdeungpo", "yongsan", "eunpeung", "jongno", "junggu", "jungnang"],
+      print: (delay=1000) => {
+        setTimeout(() => {
+          console.log(this.districts.join(","))
+        }, delay)
+      }
+    }
+    seoul.print() 
+
+    //print 프로퍼티를 화살표 함수로 바꾼다는 건 this가 window 객체가 된다는 뜻
+    //setTimeout(()=> {console.log(this===window)}, delay)
+    //seoul.print() //true
+    //이 문제 해결하려면 화살표가 아니라 function 사용해서 정의한 함수 사용해야 함
+
+    var seoul = {
+      districts: ["gangnam", "gangnseo", "gangdong", "gangbuk", "gwangjjin", "gwanak", "guro", "geumcheon", "nowon", "dobong", "dongdaemun", "dongjak", "mapo", "seocho", "seodaemun", "sungdong", "sungbuk", "songpa", "yangcheon", "yungdeungpo", "yongsan", "eunpeung", "jongno", "junggu", "jungnang"],
+      print: function(delay=1000) {
+        setTimeout(() => {
+          console.log(this===window)
+        }, delay)
+      }
+    }
+    seoul.print() //false
+
+
+  </script>
+
+
+
+</body>
+
+</html>

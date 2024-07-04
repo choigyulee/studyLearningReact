@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <script type="text/babel">
+
+    function logActivity(name="최규리", activity="수영") {
+    console.log( `${name}는 ${activity}을 좋아합니다.` )
+    }
+
+    logActivity()
+    //logActivity 함수를 호출하면서 인자를 지정하지 않아도 디폴트 값 사용하여 정상 실행, 어떤 타입의 값도 디폴트 값으로 사용 가능
+
+    var defaultPerson = {
+      name: {
+        first: "규리",
+        last: "최"
+      },
+      favActivity: "수영"
+    }
+
+    function logActivity(p=defaultPerson) {
+      console.log(`${p.name.first}는 ${p.favActivity}을 좋아합니다.`)
+    }
+    logActivity()
+
+  </script>
+</body>
+</html>

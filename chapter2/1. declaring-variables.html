@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  <style media="screen">
+    #container {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    #container>div {
+        height: 5em;
+        width: 5em;
+        background-color: lightblue;
+    }
+  </style>
+  <title>Document</title>
+</head>
+<body>
+  <script type="text/babel">
+
+    // 1. const
+
+    var red = true
+    red = false
+    console.log(red)
+
+    const black = true
+    black = false
+    //상수에 값을 재설정하는 건 불가능
+
+
+    // 2. let
+
+    var subject = "html"
+    if (subject) {
+      var subject = "react"
+      console.log('difficult', subject) //difficult react
+    }
+    console.log('easy', subject) //easy react
+
+    var subject = "html"
+    if (subject) {
+      let subject = "react"
+      console.log('difficult', subject) //difficult react
+    }
+    console.log('easy', subject) //easy html
+
+    var div,
+        container = document.getElementById('container')
+    for (var i=0; i<5; i++) {
+      div.onclick = function(){
+        alert('이것은 박스 #' + i + '입니다.')
+      }
+      container.appendChild(div)
+    }
+    //5개의 박스 중 어느 것을 클릭하건 i의 값은 글로벌 변수 i에 있는 5이기 때문에 표시되는 인덱스는 모두 동일: '이것은 박스 #5입니다.'
+
+    var div,
+        container = document.getElementById('container')
+    for (let i=0; i<5; i++) {
+      div.onclick = function(){
+        alert('이것은 박스 #' + i + '입니다.')
+      }
+      container.appendChild(div)
+    }
+    //루프 카운터 변수 i를 var 대신 let을 사용해 선언하면 i의 영역이 블록으로 제한, 인덱스가 정상적으로 표시: ex.'이것은 박스 #0입니다.'
+
+
+    // 3. template strings
+
+    const lastName = "Choi"
+    const middleName = "Jane"
+    const firstName = "Gyulee"
+    console.log(lastName + ',' + firstName + '' + middleName)
+    console.log(`${lastName}, ${firstName} ${middleName}`)
+
+   //ES6 템플릿 문자열은 공백(줄바꿈 포함) 유지
+
+    var ticketAgent = "예술의 전당"
+    var event = "피아노 리사이틀"
+    var qty = 2
+    var price = 10
+
+    console.log(`
+    ${firstName} 님께,
+    
+    ${event} 티켓 ${qty} 건을 구매해주셔서 감사합니다.
+    
+    주문 상세 정보:
+    
+     ${lastName} ${firstName} ${middleName}
+     ${qty} x $${price} = $${qty*price} 공연: ${event}
+     
+    공연 시작 30분 전까지 배부처에서 티켓을 수령하시기 바랍니다.
+    
+    감사합니다.
+    
+    ${ticketAgent} 드림
+
+    `)
+
+    //이해하기 쉽게 정렬된 HTML을 코드에 추가 가능
+
+    var article = {
+      title: "Template Strings",
+      body: `
+        <div>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+          <p> laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+      `
+    }
+
+    document.body.innerHTML = `
+    <section>
+      <header>
+          <h1>The HTML5 Blog</h1>
+      </header>
+      <article>
+          <h2>${article.title}</h2>
+          ${article.body}
+      </article>
+      <footer>
+          <p>copyright ${new Date().getYear()} | The HTML5 Blog</p>
+      </footer>
+    </section>
+    `
+    
+  </script>
+</body>
+</html>
