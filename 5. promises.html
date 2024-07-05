@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <script type="text/babel">
+
+    // 1. 비동기적인 동작을 잘 다루기 위한 프라미스 
+    // JS에서는 비동기로 데이터를 처리하는 경우가 많아서 비동기 요청을 쉽게 처리할 수 있으면 좋음
+    
+    //randomuser.me API로부터 데이터 가져오는 비동기 프라미스 만들기
+    //getFakeMembers 함수는 새로운 프라미스 반환, 그 프라미스는 reandomuser.me API에 요청 보냄
+    //프라미스 성공 시 데이터 제대로 받아오고, 실패하면 오류 발생
+
+    const getFakeMembers = count => new Promise((resolves, rejects) => {
+      const api = `https://api.randomuser.me/?nat=US&results=${count}`
+      const request = new XMLHttpRequest()
+      request.open('GET', api)
+      request.onload = () =>
+        (request.status === 200) ?
+          resolves(JSON.parse(request.response).results) :
+          reject(Error(request.statusText))
+      request.onerror = (err) => rejects(err)
+      request.send()
+    })
+
+    getFakeMembers(5).then(
+      members => console.log(members),
+      err => console.error(
+        new Error("randomuser.me에서 멤버를 가져올 수 없습니다."))
+    )
+    //프라미스를 만들 수 있게 되었지만 아직 프라미스를 사용하지는 않음
+
+    //가져오고 싶은 멤버 수를 getMembers 함수에 전달해 호출하면 실제 프라미스 사용 가능
+    //프라미스 성공 시 처리할 작업을 기술하기 위해 then 함수를 프라미스 뒤에 연쇄
+    //오류 처리를 위한 콜백도 제공
+
+    getFakeMembers(5).then(
+      members => console.log(members),
+      err => console.error(
+        new Error("randomuser.me에서 멤버를 가져올 수 없습니다.")
+      )
+    )
+
+
+    // 2. fetch
+    //교재에는 삭제된 것 같은데 깃허브에는 남아있어서 추가 작성
+
+    fetch("https://api.randomuser.me/?nat=US&results=10")
+      .then(response => response.json())
+      .then(members => console.log(members))
+      .catch(err => console.error(err))
+
+  </script>
+</body>
+
+</html>
